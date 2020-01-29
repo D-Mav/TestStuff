@@ -21,10 +21,14 @@ int main() {
 	cout << "Welcome to the todo list app!\n\n";
 	cout << "Please enter the maximum amount of taks on your todo list\n";
 	cin >> list_capacity; // user defines capacity of array
+	
 	cout << "Please enter the size of the list you wish to create\n";
 	cin >> list_size; //user defines list size
-	string todolist[list_capacity]; //the todo list initialized
+	
+	string todolist[list_capacity] = {}; //the todo list initialized
+	
 	cout << "Enter your list items (single word, press enter between each item)\n";
+	
 	for (int i = 0; i < list_size; i++) { //array is filled by user input
 		cin >> todolist[i];
 	}
@@ -41,12 +45,13 @@ int main() {
 		case 1: //adds an element to the array
 		{
 			if (list_size < list_capacity){ //checks if array is full
-			add_element(todolist,list_size);
-			list_size++;
-			break;						
+				add_element(todolist,list_size);
+				list_size++;
+				cout << "Task added!\n\n";
+				break;						
 		}
 			else{			
-				cout << "ERROR: List is full!\n";
+				cout << "ERROR: List is full!\n\n";
 		}			
 			show_menu();
 			break;
@@ -55,18 +60,20 @@ int main() {
 		{
 			replace_element(todolist, list_size);
 			show_menu();
+			cout << "Change complete!\n\n";
 			break;
 		}
 		case 3: //deletes an element in the array
 		{						
-			if (list_size <= 0){
-			cout << "ERROR: List is empty!\n";
+			if (list_size == 0){
+				cout << "ERROR: List is empty!\n\n";
 			
 		}
 			else{
-			remove_element(todolist, list_size);
-			show_menu();
-			list_size--;	
+				remove_element(todolist, list_size);
+				show_menu();
+				list_size--;
+				cout << "Removal complete!\n\n";
 			}
 			break;
 		}
@@ -85,17 +92,15 @@ int main() {
 		}
 		default: //unwanted inputs recieve this error message
 		{
-			cout << "ERROR: INVALID menu option \n";
+			cout << "ERROR: INVALID menu option \n\n";
 			break;
 		}
 	}
 }
 }
 
-
-
-
-void show_menu() {						//this function simply shows the user the menu options
+//this function simply shows the user the menu options
+void show_menu() {					
 	cout << "\n|-------------------|\n";
 	cout << "|   *MENU OPTIONS*  |\n";
 	cout << "| Press 1 to add    |\n";
@@ -106,13 +111,14 @@ void show_menu() {						//this function simply shows the user the menu options
 	cout << "|-------------------|\n";
 }
 
-void print_list(string todolist[], int list_size) { //this function prints out the array
-	cout << "-TODO LIST-\n";
-	for (int i = 0; i < list_size; i++) {
-		cout << "|" << i + 1 << "|" << todolist[i] << endl;
-	}
+//OPTION 1 ADD FUNCTION
+void add_element(string todolist[], int list_size) {
+	
+	cout << "Enter a new task for your todo list\n";
+	cin >> todolist[list_size];
 }
 
+//OPTION 2 CHANGE FUNCTION
 void replace_element(string todolist[],int list_size) {
 	int pos; //position in the list
 	string replacer; // being inserted int the list
@@ -123,30 +129,34 @@ void replace_element(string todolist[],int list_size) {
 		cout << "Enter a replacment (single word)\n";
 		cin >> replacer;
 		todolist[pos] = replacer;
-		cout << "Change complete!\n";
 	}
 	else{
-		cout << "ERROR: not valid. Returning to menu\n";
+		cout << "ERROR: not valid. Returning to menu\n\n";
 	}
 }
 
+//OPTION 3 DELETE FUNCTION
 void remove_element(string todolist[], int list_size) {
 	int pos; //element being removed
 	cout << "Enter the number on the list you wish to remove\n";
 	cin >> pos;
-	if (pos > 0 && pos != list_size){		
+	
+		if(pos == list_size){ // If last task on list, shortens the todo list so it seems to the user it was deleted
+			pos--;
+		}
+		else{
+		pos--;	
 		for ( int i = pos; i < list_size; i++){
-			todolist[i] = todolist [i+1]; //shifts any elements on the right of the target to the left, removing gaps
-			cout << "Removal complete!\n";
+			todolist[i] = todolist [i+1]; //shifts any elements on the right of the target to the left, removing gaps							
 		}
 	}
-	else{
-		cout << "ERROR: not valid. Returning to menu\n";
+}
+
+//OPTION 4 SHOW LIST FUNCTION
+void print_list(string todolist[], int list_size) { //this function prints out the array
+	cout << "-TODO LIST-\n";
+	for (int i = 0; i < list_size; i++) {
+		cout << "|" << i + 1 << "|" << todolist[i] << endl;
 	}
 }
-	
-void add_element(string todolist[], int list_size) {
-	
-	cout << "Enter a new task for your todo list\n";
-	cin >> todolist[list_size];
-}
+
